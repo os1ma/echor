@@ -12,10 +12,10 @@ pub fn run(ip_address: &String, port: &String) {
 
     loop {
         if let Ok((client, addr)) = server.accept() {
-            println!("Connected by {}", addr);
-
             thread::spawn(move || {
+                println!("Connected by {}", addr);
                 handle(&client);
+                println!("Connection closed {}", addr);
             });
         }
     }
@@ -24,7 +24,11 @@ pub fn run(ip_address: &String, port: &String) {
 fn handle(mut client: &TcpStream) {
     let mut reader = BufReader::new(client);
     let mut buf = String::new();
-    while let Ok(_) = reader.read_line(&mut buf) {
+    while let Ok(size) = reader.read_line(&mut buf) {
+        if size == 0 {
+            break;
+        }
+
         print!("> {}", buf);
         client.write_all(buf.as_bytes()).unwrap();
         buf = String::new()
