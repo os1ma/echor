@@ -1,3 +1,6 @@
+mod client;
+mod server;
+
 use std::{env, process};
 
 fn main() {
@@ -13,8 +16,8 @@ fn main() {
     let port = &args[3];
 
     match behavior_type.as_str() {
-        "server" => server(ip_address, port),
-        "client" => client(ip_address, port),
+        "server" => server::run(ip_address, port),
+        "client" => client::run(ip_address, port),
         _ => {
             eprintln!("Invalid argument. You must specify server or client.");
             eprint_usage();
@@ -25,12 +28,4 @@ fn main() {
 
 fn eprint_usage() {
     eprintln!("Usage: echo <server|client> <ip address> <port>")
-}
-
-fn server(ip_address: &String, port: &String) {
-    println!("Server started {}:{}", ip_address, port);
-}
-
-fn client(ip_address: &String, port: &String) {
-    println!("Connecting to {}:{}", ip_address, port);
 }
