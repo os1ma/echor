@@ -25,7 +25,7 @@ fn handle(mut client: &TcpStream) {
     let mut reader = BufReader::new(client);
     let mut buf = String::new();
     while let Ok(_) = reader.read_line(&mut buf) {
-        print!("{}", buf);
+        print!("> {}", buf);
         client.write_all(buf.as_bytes()).unwrap();
         buf = String::new()
     }
