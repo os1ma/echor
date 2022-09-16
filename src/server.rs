@@ -1,5 +1,5 @@
 use std::{
-    io::{BufRead, BufReader},
+    io::{BufRead, BufReader, Write},
     net::{TcpListener, TcpStream},
     thread,
 };
@@ -14,18 +14,19 @@ pub fn run(ip_address: &String, port: &String) {
         if let Ok((client, addr)) = server.accept() {
             println!("Connected by {}", addr);
 
-            thread::spawn(|| {
-                handle(client);
+            thread::spawn(move || {
+                handle(&client);
             });
         }
     }
 }
 
-fn handle(client: TcpStream) {
+fn handle(mut client: &TcpStream) {
     let mut reader = BufReader::new(client);
     let mut buf = String::new();
     while let Ok(_) = reader.read_line(&mut buf) {
         print!("{}", buf);
+        client.write_all(buf.as_bytes()).unwrap();
         buf = String::new()
     }
 }
