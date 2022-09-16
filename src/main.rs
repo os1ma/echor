@@ -27,5 +27,5 @@ fn main() {
 }
 
 fn eprint_usage() {
-    eprintln!("Usage: echo <server|client> <ip address> <port>")
+    eprintln!("Usage: echor <server|client> <ip address> <port>")
 }
